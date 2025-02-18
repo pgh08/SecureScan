@@ -1,0 +1,5 @@
+*.env
+*/node_modules
+*package-lock.json
+*SecureScan_SSH_Key
+*SecureScan_SSH_Key.pub
