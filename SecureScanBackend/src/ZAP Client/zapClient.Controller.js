@@ -3,9 +3,13 @@ import zapClientInitializer from "./zapClient.initializer.js";
 export default class zapClientCtrl {
     static async getZapSpider(params) {
 
-        let ascanTool = zapClientInitializer.initializeZapProxy();
+        let spiderTool = zapClientInitializer.initializeZapProxy();
         
-        let response = (await ascanTool).spider.scan(params);
-        return response;
+        let response = await (await spiderTool).spider.scan(params);
+        const scanId = response['scan'];
+        
+        const results = await (await spiderTool).spider.results(scanId);
+
+        return results;
     }
 }
