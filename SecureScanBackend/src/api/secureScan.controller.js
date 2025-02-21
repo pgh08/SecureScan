@@ -12,12 +12,21 @@ export default class secureScanCtrl {
             baseurl: uri
         };
 
-        try {
-            await zapSpiderCtrl.doSpiderScan(req);
-            let alerts = await zapClientCtrl.getZapAlert(params);
-            res.json(alerts);
-        } catch(err) {
-            res.sendStatus(400).json({error : "Alert laoding failed"})
+        await zapSpiderCtrl.doSpiderScan(req);
+        let alerts = await zapClientCtrl.getZapAlert(params);
+        res.json(alerts);
+    }
+
+    static async apiGetZapAscan(req, res, nex) {
+        const scanPolicyName = req.query.scanPolicyName ? req.query.scanPolicyName : null;
+        const policyId = req.query.policyId ? req.query.policyId : null;
+
+        let params = {
+            scanPolicyName: scanPolicyName,
+            policyId: policyId
         }
+
+        let ascanResults = await zapClientCtrl.getZapAscan(params);
+        res.json(ascanResults);
     }
 }

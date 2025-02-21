@@ -11,18 +11,18 @@ export default class zapSpiderCtrl {
         let scanId = await spiderTool.spider.scan(params);
         console.log(`Spider scan started with ID: ${scanId['scan']}`);
 
-        await zapSpiderCtrl.waitForSpiderCompletion(scanId);
+        await this.waitForCompletion("Spider", scanId);
         return scanId;
     }
 
-    static async waitForSpiderCompletion(scanId) {
+    static async waitForCompletion(scanType, scanId) {
         while (true) {
-            let status = await this.getSpiderStatus(scanId);
+            let status = await this.getStatus(scanId);
 
-            console.log(`Spider scan status: ${status.status}%`);
+            console.log(`${scanType} scan status: ${status.status}%`);
             
             if (status.status >= 100) {
-                console.log("Spider scan completed.");
+                console.log(`${scanType} scan completed.`);
                 break; // Exit loop when scan is finished
             }
             
@@ -30,7 +30,7 @@ export default class zapSpiderCtrl {
         }
     }
 
-    static async getSpiderStatus(scanId) {
+    static async getStatus(scanId) {
         let spiderTool = await zapClientInitializer.initializeZapProxy();
         return spiderTool.spider.status(scanId);
     }
